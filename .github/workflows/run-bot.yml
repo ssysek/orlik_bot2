@@ -11,7 +11,7 @@ on:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: sportbc-runners
     env:
       # Defaults; can be overridden via workflow_dispatch inputs
       COURT_ID: '229'
