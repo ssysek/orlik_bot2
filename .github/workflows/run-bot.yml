@@ -1,8 +1,6 @@
 name: Orlik Bot
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
       court_id:
