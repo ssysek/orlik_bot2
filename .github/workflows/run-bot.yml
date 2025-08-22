@@ -1,0 +1,36 @@
+name: Orlik Bot
+
+on:
+  schedule:
+    - cron: '*/6 * * * *'
+  workflow_dispatch:
+    inputs:
+      court_id:
+        description: 'Override COURT_ID for manual run'
+        required: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      # Defaults; can be overridden via workflow_dispatch inputs
+      COURT_ID: '229'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --no-input -r requirements.txt
+
+      - name: Run bot
+        env:
+          # Allow manual overrides when running via "Run workflow"  
+          COURT_ID: ${{ github.event.inputs.court_id || env.COURT_ID }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python bot.py
+

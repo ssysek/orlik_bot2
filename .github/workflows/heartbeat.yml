@@ -1,0 +1,38 @@
+name: Orlik Heartbeat
+
+on:
+  schedule:
+    # Daily at 09:30 Europe/Warsaw (07:30 UTC typical summer offset)
+    - cron: '30 7 * * *'
+  workflow_dispatch:
+    inputs:
+      court_id:
+        description: 'Override COURT_ID for manual heartbeat run'
+        required: false
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    env:
+      COURT_ID: '229'
+      ALWAYS_NOTIFY_ON_SUCCESS: 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --no-input -r requirements.txt
+
+      - name: Run bot (heartbeat)
+        env:
+          COURT_ID: ${{ github.event.inputs.court_id || env.COURT_ID }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          ALWAYS_NOTIFY_ON_SUCCESS: ${{ env.ALWAYS_NOTIFY_ON_SUCCESS }}
+        run: python bot.py
+
+
