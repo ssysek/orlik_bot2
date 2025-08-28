@@ -19,7 +19,7 @@ logging.basicConfig(
 # Default court id remains 229 unless COURT_ID is provided
 COURT_ID = int(os.getenv("COURT_ID", "229"))
 
-FROM_DATE = "2025-08-22"
+FROM_DATE = "2025-09-01"
 TO_DATE = "2025-09-30"
 
 # Timezone offset in minutes for the Ballsquad API; default -120 (UTC+2)
